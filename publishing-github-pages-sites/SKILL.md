@@ -1,6 +1,6 @@
 ---
 name: publishing-github-pages-sites
-description: Use when a user wants to create, publish, repair, or update a simple static website on GitHub Pages, including repo setup, Pages settings, push authentication, custom domain DNS, or live URL verification.
+description: Use when a user wants to create, publish, repair, or update a simple static website on GitHub Pages, including first-time GitHub setup, repo setup, Pages settings, push authentication, custom domain DNS, or live URL verification.
 ---
 
 # Publishing GitHub Pages Sites
@@ -27,6 +27,7 @@ description: Use when a user wants to create, publish, repair, or update a simpl
 
 | 情况 | 推荐路线 |
 | --- | --- |
+| 用户没有 GitHub 账号，或不知道 GitHub 是什么 | 先做 GitHub Account Readiness |
 | 纯静态页面，无构建步骤 | GitHub Pages: `main` branch + root folder |
 | 需要 npm build、React/Vite/Next 静态导出 | GitHub Actions Pages workflow |
 | 本机没有 GitHub 推送权限 | 先解决认证，再发布 |
@@ -42,35 +43,44 @@ description: Use when a user wants to create, publish, repair, or update a simpl
    - 确认图片、字体、CSS 路径不是本机绝对路径。
    - 确认不包含未定稿的邮箱、电话、私密信息。
 
-2. 准备 GitHub 仓库。
+2. 做 GitHub Account Readiness。
+   - If the user has no GitHub account, guide them to create one at `github.com` before discussing push, Pages, or DNS.
+   - 用人话解释：GitHub 是放网页文件的线上文件夹；GitHub Pages 是把静态网页公开访问的免费发布功能。
+   - 提醒用户完成邮箱验证、登录浏览器、基础安全设置和双因素验证要求。
+   - 如果用户只会用网页操作，先走 GitHub 网页端上传文件；不要一开始要求他们理解命令行。
+   - 如果要长期维护，再补 SSH key、GitHub CLI 或仓库权限。
+
+3. 准备 GitHub 仓库。
    - 如果仓库不存在，请用户创建或授权创建。
    - 如果仓库已存在，检查远程地址、默认分支、当前文件状态。
    - 连接器能读仓库不等于能写文件；必须确认内容推送权限。
 
-3. 选择 Pages 发布方式。
+4. 选择 Pages 发布方式。
    - 简单静态站先用 branch publish：`main` / root。
    - 只有需要构建步骤，才添加 GitHub Actions。
    - 不要同时保留多套发布机制，避免队列和失败状态互相干扰。
 
-4. 处理认证。
+5. 处理认证。
    - HTTPS push 失败时，不要反复重试。
    - 临时操作可用 GitHub CLI 登录。
    - 长期发布优先用 SSH Deploy Key，并限制在单个仓库。
    - 不要把 token、私钥、验证码写进项目文件或聊天正文。
 
-5. 推送并等待。
+6. 推送或上传并等待。
+   - 新手用户可先用 GitHub 网页端上传 `index.html`、CSS 和 `assets/`。
+   - 熟悉 git 的用户再用 commit/push。
    - push 后给 GitHub Pages 几分钟构建时间。
    - 如果后台显示 queued，不要频繁触发新部署。
    - 如果 Pages branch route 反复失败且需要构建，再切到 Actions。
 
-6. 真实验证。
+7. 真实验证。
    - 公共 URL 返回 `200`。
    - 页面包含最新关键文字。
    - CSS、图片、Logo 等资源返回 `200`。
    - 手机和桌面宽度没有明显断行、遮挡、溢出。
    - 本地工作区干净，或明确说明还剩什么改动。
 
-7. 域名和 DNS。
+8. 域名和 DNS。
    - 先让 `https://OWNER.github.io/REPO/` 稳定可打开。
    - 再配置 custom domain 和 DNS。
    - apex 域名、`www`、CNAME、A/AAAA 记录要分别说明。
@@ -96,4 +106,3 @@ description: Use when a user wants to create, publish, repair, or update a simpl
 - 关键资源是否加载。
 - 认证方式是否安全、可持续。
 - 自定义域名、DNS、ICP 或大陆访问还有没有后续限制。
-
